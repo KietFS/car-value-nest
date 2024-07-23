@@ -1,3 +1,4 @@
+import { Report } from '../reports/report.entity';
 import {
   AfterInsert,
   AfterRemove,
@@ -5,8 +6,8 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
+  OneToMany,
 } from 'typeorm';
-import { Exclude } from 'class-transformer';
 
 @Entity()
 export class User {
@@ -18,6 +19,14 @@ export class User {
 
   @Column()
   password: string;
+
+  @Column({ default: true })
+  admin: boolean;
+
+  //This does not change anything in the db
+  //The second argument is just a syntax, dont care about that too much
+  @OneToMany(() => Report, (report) => report.user)
+  reports: Report[];
 
   @AfterInsert()
   logInsert() {
